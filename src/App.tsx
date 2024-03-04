@@ -4,12 +4,12 @@ import { AuthProvider } from './Context/AuthContext'
 import useAuth from './Hooks/useAuth'
 
 function App() {
-  const {auth, loading} = useAuth();
+  const {auth, user, loading} = useAuth();
 	
 	if(loading) return <p>Carregando...</p>;
 
   return (
-    <AuthProvider value={auth}>
+    <AuthProvider value={{auth, user}}>
 			<AppRoutes/>
 		</AuthProvider>
   )

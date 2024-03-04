@@ -1,10 +1,14 @@
 import { ReactNode, createContext, useContext } from "react";
 
+interface IAuthContext {
+	auth: boolean,
+	user: string
+};
+export const AuthContext = createContext<IAuthContext>({auth: false, user: ''});
 
-export const AuthContext = createContext<boolean>(false);
 
 export function AuthProvider(    
-	{ children, value }: { children: ReactNode, value: boolean } 
+	{ children, value }: { children: ReactNode, value: IAuthContext } 
 ) {
 	return (
 		<AuthContext.Provider value={value}>

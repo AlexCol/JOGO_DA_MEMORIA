@@ -4,6 +4,7 @@ const token = new URL(window.location.href).searchParams.get('t');
 
 function useAuth() {
 	const [auth, setAuth] = useState<boolean>(false);
+	const [user, setUser] = useState<string>('');
 	const [loading, setLoading] = useState(true);
 
 	
@@ -23,20 +24,23 @@ function useAuth() {
 		const accessToken = localStorage.getItem('accessToken');
 		if (!accessToken) {
 			setAuth(false);
+			setUser('');
 			setLoading(false);	
 			return;
 		};		
 		try {
-			await new Promise<void>((resolve) => { //substituir pela chamada a api
-				setTimeout(() => {
-					console.log("consulting api");
-					resolve();
-				}, 2000);
-			});
+			// await new Promise<void>((resolve) => { //substituir pela chamada a api
+			// 	setTimeout(() => {
+			// 		console.log("consulting api");
+			// 		resolve();
+			// 	}, 2000);
+			// });
 			setAuth(true);
+			setUser('Alexandre');
 		} catch {
 			localStorage.removeItem('accessToken');
 			setAuth(false);
+			setUser('');
 		};
 		setLoading(false);
 	};	
@@ -60,6 +64,6 @@ function useAuth() {
 		};
 	}, []);
 	
-	return {auth, loading};
+	return {auth, user, loading};
 }
 export default useAuth

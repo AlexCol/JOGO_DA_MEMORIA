@@ -1,0 +1,73 @@
+.main {
+	padding-top: 5em;
+	display: flex;
+	flex-direction: column;
+
+	& h2 {
+		text-align: center;
+		margin-bottom: 0;
+	}
+
+	& h3 {
+		text-align: center;
+		margin: 0;
+	}
+
+	& form {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	& .sizeContainer {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 20%;
+		padding: 1em;
+		
+		& h4 {
+			margin: 0;
+		}
+	}
+
+	& .attemptContainer {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 20%;
+		padding: 1em;
+		
+		& h4 {
+			margin: 0;
+		}
+	}
+}
+
+.main button {
+	width: 10%;
+	padding: 0.5em;
+	color: darkred;
+	background-color: white;
+	border: 1px solid darkred;
+	transition: 0.5s;
+}
+
+.main button:hover {
+	color: white;
+	background-color: darkred;
+	border: 1px solid white;
+}
+
+.blue {
+	accent-color: blue;
+}
+.green {
+	accent-color: green;
+}
+.yellow {
+	accent-color: yellow;
+}
+.red {
+	accent-color: red;
+}
