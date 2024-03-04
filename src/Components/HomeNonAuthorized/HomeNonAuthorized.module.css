@@ -1,0 +1,31 @@
+.notLoged {
+	display: flex;
+	flex-direction: column;
+	margin: 0 auto;
+	width: 50%;
+	padding-top: 3em;
+}
+
+.notLoged h1 {
+	text-align: center;
+}
+
+.notLoged h3 {
+	text-align: center;
+}
+
+.notLoged a {
+	position: relative;
+	text-decoration: none;
+	text-align: center;
+	background-color: white;
+	border: 1px solid white;
+	padding: 0 auto;
+	margin: 1em 45%;
+	transition: 0.5s;
+}
+
+.notLoged a:hover {
+	background-color: blueviolet;
+	color: white;
+}
