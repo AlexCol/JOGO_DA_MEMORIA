@@ -1,8 +1,8 @@
-import { render } from 'react-dom';
 import Card from '../Card/Card';
 import styles from './Game.module.css';
 import { useEffect, useState } from "react";
 import confetti from 'canvas-confetti';
+import { useNavigate } from 'react-router-dom';
 
 interface IGameProps {
 	boardSize: number;
@@ -10,30 +10,32 @@ interface IGameProps {
 }
 
 function Game({boardSize, possibleAttemps}: IGameProps) {
+	const navigate = useNavigate();
+	
 	const possibleFigures1 = ["🐵", "🐺", "🦊", "🦝", "🐴", "🐗", "🐭", "🐻", "🐔", "🐸"];
 	const possibleFigures2 = ["💐", "🌸", "🏵️", "🌹", "❄️", "☄️", "🌩️", "🔥", "🌊", "🍂"];
 	const possibleFigures3 = ["🔨", "🪓", "⛏️", "⚔️", "🧲", "⚖️", "🔬", "🧪", "🧼", "🩺"];
-	const possibleFigures4 = ["♻️", "⚜️"];
-	//+feito pra não quebrar a linha do editor
-	const possibleFigures = possibleFigures1.concat(possibleFigures2).concat(possibleFigures3).concat(possibleFigures4);
+	const possibleFigures4 = ["♻️", "⚜️"];	
+	const possibleFigures = possibleFigures1.concat(possibleFigures2).concat(possibleFigures3).concat(possibleFigures4);//+feito pra não quebrar a linha do editor
+	
 	const [gameImages, setGameImages] = useState<string[]>([]);
 	const [findedImages, setFindedImages] = useState<string[]>([]);
+	const [clearReveal, setClearReveal] = useState<boolean>(false);
+	const [activeGame, setActiveGame] = useState<boolean>(false);
+	const [defeat, setDefeat] = useState<boolean>(false);
+	const [victory, setVictory] = useState<boolean>(false);
+	const [points, setPoints] = useState<number>(0);
 	const [tries, setTries] = useState<number>(0);
 	const [firstPick, setFirstPick] = useState<{id: number, value: string}|null>(null);
 	const [secondPick, setSecondPick] = useState<{id: number, value: string}|null>(null);
-	const [endGame, setEndGame] = useState<boolean>(false);
-	const [victory, setVictory] = useState<boolean>(false);
-	const [clearReveal, setClearReveal] = useState<boolean>(false);
-	const [points, setPoints] = useState<number>(0);
 		
 	//! logica para o jogo  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	function handleClick(index: number) {
-		if(endGame) return;
+		if(!activeGame) return;
 		if(clearReveal) return;
+		if(tries >= possibleAttemps) return;
 		if(findedImages.some(f => f === gameImages[index])) return;
-		if (firstPick?.id === index) {
-			return;
-		}
+		if (firstPick?.id === index) return;
 
 		if(!firstPick) {
 			setFirstPick({id: index, value: gameImages[index]});
@@ -43,8 +45,7 @@ function Game({boardSize, possibleAttemps}: IGameProps) {
 	}
 
 	useEffect(() => {
-		if(!secondPick) return;
-		if(!firstPick) return;
+		if(!secondPick || !firstPick) return;
 
 		if(firstPick.value === secondPick.value && firstPick.id !== secondPick.id) {
 			setFindedImages([...findedImages, secondPick.value]);
@@ -60,12 +61,16 @@ function Game({boardSize, possibleAttemps}: IGameProps) {
 	}, [secondPick]);
 
 	//! bloco de finalização do jogo //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	useEffect(() => {
 		if(gameImages.length > 0 && findedImages.length === gameImages.length/2) {
 			setVictory(true);
+			setActiveGame(false);
 		}
-	}, [findedImages]);
+		if(tries >= possibleAttemps) {
+			setDefeat(true);
+			setActiveGame(false);
+		}
+	}, [tries, findedImages]);
 
 	useEffect(() => {
 		if(victory) {
@@ -77,35 +82,56 @@ function Game({boardSize, possibleAttemps}: IGameProps) {
 				spread: 300
 			});
 		}
-	}, [victory])
+	}, [victory]);
 
+	//! bloco de preparação do jogo //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	useEffect(() => {
-		if(tries >= possibleAttemps) {
-			setEndGame(true);
-		}
-	}, [tries]);
-
-
-		//! reincia o jogo //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		function startNewGame() {
+		if(clearReveal && !activeGame && (!victory && !defeat)) {
 			prepareImages();
-			
+			setActiveGame(true);
+			setTimeout(() => {					
+				setClearReveal(false);
+			}, 2000);
+		}
+		if(clearReveal && (victory || defeat)) { 
 			setFindedImages([]);
 			setFirstPick(null);
 			setSecondPick(null);
-			setEndGame(false);
+			setDefeat(false);
 			setVictory(false);
+			setTimeout(() => {					
+				setClearReveal(false);
+			}, 2000);
 		}
+		if(!clearReveal) {
+			setTimeout(() => {					
+				if (!activeGame) setClearReveal(true);
+			}, 2000);
+		}
+	}, [clearReveal]);
 	
-		useEffect(() => {
-			if (clearReveal) {
-				setTimeout(() => {
-					setClearReveal(false);
-				}, 2000);
-			}
-		}, [clearReveal])
+	function startNewGame() {
+		setClearReveal(true);
+	}
 
-	//! bloco de preparação do jogo //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	useEffect(() => {
+		setGameImages(() => []);
+		for(let i = 0; i < boardSize*boardSize; i++) { //settin default value
+			setGameImages(current => [...current, 'X']);
+		};
+	}, [])
+
+	//! funcções auxiliares  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	function gotToMainMenu() {
+		navigate('restart');
+	}
+	function prepareImages() {
+		const selectedBaseImages = randomizePossibleFigures((boardSize*boardSize/2), possibleFigures);
+		const duplicate = selectedBaseImages.concat(selectedBaseImages);
+		const mixedImages = randomizeSelection(duplicate);
+		setGameImages(mixedImages);
+	}
+	
 	function randomizePossibleFigures(numberOfFigures: number, possibleFigures: string[]) {
 		const selectedImages = [];
 		let selectableFigues = possibleFigures;
@@ -126,25 +152,15 @@ function Game({boardSize, possibleAttemps}: IGameProps) {
 		return images;
 	}
 
-	function prepareImages() {
-		const selectedBaseImages = randomizePossibleFigures((boardSize*boardSize/2), possibleFigures);
-		const duplicate = selectedBaseImages.concat(selectedBaseImages);
-		const mixedImages = randomizeSelection(duplicate);
-		setGameImages(mixedImages);
-		setClearReveal(true);
-	}
-	
-	useEffect(() => {
-		prepareImages()
-	}, [])
-
+ //! 'mesa de jogo' //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	return (
 		<div className={styles.game}>			
 			<h3>Tentativas restantes: {possibleAttemps-tries}</h3>
 			<h4>Pontuação atual: {points}</h4>
-			<div className={styles.board}>
+			<div className={styles.board} style={{gridTemplateColumns: `repeat(${boardSize * 2}, 6em)`}}>
 				{gameImages.map((value, index) => {
 					return (
+						<>
 						<div key={index} onClick={() => handleClick(index)} >
 							<Card
 								key={index}
@@ -154,17 +170,27 @@ function Game({boardSize, possibleAttemps}: IGameProps) {
 								pair={[firstPick, secondPick]}
 							/>
 						</div>
+						</>
 					)
 				})}
 			</div>
 			{victory && (
 				<>
 					<p>Parabens! Voce venceu!</p>
-					<p>Gostaria de inciiar uma nova partida ou encerrar e salvar sua pontução?</p>
+					<p>Gostaria de iniciar uma nova partida?</p>
 					<button onClick={startNewGame}>Jogar Novamente</button>
+					<p>Ou encerrar e voltar ao menu?</p>
+					<button onClick={gotToMainMenu}>Menu inicial</button>
 				</>
 			)}
-		</div>	
+			{defeat && (
+				<>
+					<p>Fim de jogo!</p>
+					<p>Gostaria de iniciar uma nova partida?</p>
+					<button onClick={gotToMainMenu}>Menu inicial</button>
+				</>
+			)}
+		</div>
 	)
 }
 

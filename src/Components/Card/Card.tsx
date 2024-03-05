@@ -11,7 +11,7 @@ interface ICardProp {
 function Card({id, value, clearReveal, pair}: ICardProp) {
 	const [finded, setFinded] = useState<boolean>(false);
 	const [rotate, setRotate] = useState<boolean>(false);
-	
+
 	useEffect(() => {
 		setRotate(pair.some(p => p?.id === id));
 		if(!finded) {
@@ -24,14 +24,12 @@ function Card({id, value, clearReveal, pair}: ICardProp) {
 	},[pair]);
 
 	useEffect(() => {
-		if(clearReveal) {
-			setFinded(false);
-		}
+		setFinded(clearReveal);
 	}, [clearReveal])
 
 	return (
 		<div className={styles.card_container}>
-  		<div className={`${styles.card} ${(clearReveal || finded || rotate) ? styles.rotate : ''}`}>
+  		<div className={`${styles.card} ${(finded || rotate) ? styles.rotate : ''}`}>
 				<div className={styles.back}>{value}</div>
 				<div className={styles.front}>Y</div>
   		</div>

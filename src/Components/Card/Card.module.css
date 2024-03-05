@@ -1,11 +1,13 @@
 .card_container {
 	perspective: 1000px;
-	border: 1px solid red;
+	display: flex;
+	justify-content: center;
+	margin: 0.3em;
 }
 
 .card {
   width: 6em;
-  height: 9em;
+  height: 6em;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.5s;	

@@ -10,6 +10,7 @@ interface IGamePrepProps {
 function GamePrep({prepareGame} : IGamePrepProps) {
 	const {user} = useContext(AuthContext);
 	const boardSizes = [2, 4, 6, 8];
+	const boardSizesDesc = ['Pequeno', 'Medio', 'Grande', 'Muito Grande'];
 	const colorSizeChoices = ['blue', 'green', 'yellow', 'red'];
 	const possibleAttemps = [4, 6, 8, 10];
 	const colorAttemptChoices = ['red', 'yellow', 'green', 'blue'];
@@ -41,10 +42,10 @@ function GamePrep({prepareGame} : IGamePrepProps) {
 				<div className={styles.sizeContainer}>
 					<h4>Tamanho:</h4>
 					{boardSizes.map((size, index) =>
-					<label key={size} htmlFor="board">
+					<label key={size} htmlFor={"board"+index}>
 						<input 
 							type="radio" 
-							id="board"
+							id={"board"+index}
 							defaultChecked={index === 0 ? true : false}
 							ref={el => {
 								if(el)
@@ -53,7 +54,7 @@ function GamePrep({prepareGame} : IGamePrepProps) {
 							className={styles[colorSizeChoices[index]]}
 							name="boardSize"
 							value={size} />
-						<span> {size}x{size}</span>
+						<span> {boardSizesDesc[index]} </span>
 					</label>
 					)}
 				</div>
@@ -61,11 +62,11 @@ function GamePrep({prepareGame} : IGamePrepProps) {
 				<div className={styles.attemptContainer}>
 					<h4>Tentativas:</h4>
 					{possibleAttemps.map((atempt, index) =>
-					<label key={atempt} htmlFor="atempt">
+					<label key={atempt} htmlFor={"atempt"+index}>
 						<input 
 							type="radio" 
-							id="atempt" 
-							defaultChecked={index === possibleAttemps.length-1 ? true : false}
+							id={"atempt"+index}
+							defaultChecked={index === 0 ? true : false}
 							ref={el => {
 								if(el)
 								attemptRef.current[index] = el
