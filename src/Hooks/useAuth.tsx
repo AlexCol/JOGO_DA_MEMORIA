@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store";
+import { IAuthSate, checkAuth } from "../Slices/AuthSlice";
 
 const token = new URL(window.location.href).searchParams.get('t');
 
 function useAuth() {
 	const [auth, setAuth] = useState<boolean>(false);
 	const [user, setUser] = useState<string>('');
-	const [loading, setLoading] = useState(true);
-
+	const dispatch = useDispatch<AppDispatch>();
+	const {authUser, success, loading, error} = useSelector<RootState, IAuthSate>(state => state.auth);
 	
 	useEffect(() => {
 		const firstValidation = async() => {
-			setLoading(true);
 			if(token) {
 				localStorage.setItem('accessToken', token);
 			}
 			await validateToken();			
-			setLoading(false);
 		}
 		firstValidation();		
 	}, []);
@@ -25,25 +26,23 @@ function useAuth() {
 		if (!accessToken) {
 			setAuth(false);
 			setUser('');
-			setLoading(false);	
 			return;
 		};		
 		try {
-			// await new Promise<void>((resolve) => { //substituir pela chamada a api
-			// 	setTimeout(() => {
-			// 		console.log("consulting api");
-			// 		resolve();
-			// 	}, 2000);
-			// });
-			setAuth(true);
-			setUser('Alexandre');
+			dispatch(checkAuth());
 		} catch {
 			localStorage.removeItem('accessToken');
 			setAuth(false);
 			setUser('');
 		};
-		setLoading(false);
 	};	
+
+	useEffect(() => {
+		if(!loading) {
+			setAuth(success);
+			setUser(authUser.UserName);
+		}
+	}, [authUser, loading]);
 	
 	async function handleLocalStorageChange() {
 		await validateToken();
@@ -64,6 +63,6 @@ function useAuth() {
 		};
 	}, []);
 	
-	return {auth, user, loading};
+	return {auth, user, loading, error};
 }
 export default useAuth

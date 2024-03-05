@@ -4,7 +4,7 @@ import HomeNonAuthorized from "../../Components/HomeNonAuthorized/HomeNonAuthori
 import HomeAuthorized from "../../Components/HomeAuthorized/HomeAuthorized";
 
 function Home() {
-	const auth = useContext(AuthContext);
+	const {auth} = useContext(AuthContext);
 
 	return (
 		auth ? (

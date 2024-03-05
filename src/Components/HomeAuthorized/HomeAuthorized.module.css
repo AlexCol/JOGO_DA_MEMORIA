@@ -1,0 +1,12 @@
+.btn_logout {
+	color: white;
+	background-color: purple;
+	border: 1px solid white;
+	transition: 0.5s;
+}
+
+.btn_logout:hover {
+	color: purple;
+	background-color: white;
+	border: 1px solid purple;
+}
