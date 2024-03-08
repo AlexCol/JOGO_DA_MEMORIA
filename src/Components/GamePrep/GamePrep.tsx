@@ -10,7 +10,7 @@ interface IGamePrepProps {
 function GamePrep({prepareGame} : IGamePrepProps) {
 	const {user} = useContext(AuthContext);
 	const boardSizes = [2, 4, 6, 8];
-	const boardSizesDesc = ['Pequeno', 'Medio', 'Grande', 'Muito Grande'];
+	const boardSizesDesc = ['Pequeno (2 pares)', 'Medio (8 pares)', 'Grande (18 pares)', 'Muito Grande (32 pares)'];
 	const colorSizeChoices = ['blue', 'green', 'yellow', 'red'];
 	const possibleAttemps = [4, 6, 8, 10];
 	const colorAttemptChoices = ['red', 'yellow', 'green', 'blue'];
@@ -66,7 +66,7 @@ function GamePrep({prepareGame} : IGamePrepProps) {
 						<input 
 							type="radio" 
 							id={"atempt"+index}
-							defaultChecked={index === 0 ? true : false}
+							defaultChecked={index === possibleAttemps.length-1 ? true : false}
 							ref={el => {
 								if(el)
 								attemptRef.current[index] = el

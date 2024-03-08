@@ -13,7 +13,7 @@ function App() {
 		<>
 		<p>Ocorreu um erro no processamento!</p>
 		<p>{error}</p>
-		<a href={`http://localhost:3011/login?o=${encrypt(window.location.origin)}`}>Logar novamente</a>
+		<a href={`https://telas-autenticador-react-two.vercel.app/?o=${encrypt(window.location.origin)}`}>Logar novamente</a>
 		</>
 	);
 

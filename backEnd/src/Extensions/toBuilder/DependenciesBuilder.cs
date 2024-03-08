@@ -1,4 +1,6 @@
+using backEnd.src.Repository.ScoreRepository;
 using backEnd.src.Services.CryptoService;
+using backEnd.src.Services.ScoreService;
 
 namespace backEnd.src.Extensions.toBuilder;
 
@@ -16,5 +18,7 @@ public static class DependenciesBuilder {
 
 		//!adicionando classes para injeções de dependencia
 		builder.Services.AddScoped<ICryptoService, CryptoService>();
+		builder.Services.AddScoped<IScoreRepository, ScoreRepository>();
+		builder.Services.AddScoped<IScoreService, ScoreService>();
 	}
 }
