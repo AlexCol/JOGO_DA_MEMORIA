@@ -3,6 +3,11 @@ import styles from './Game.module.css';
 import { useEffect, useState } from "react";
 import confetti from 'canvas-confetti';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store';
+import { IAuthSate } from '../../Slices/AuthSlice';
+import { IScore } from '../../Interfaces/IScore';
+import { newScore } from '../../Slices/ScoreSlice';
 
 interface IGameProps {
 	boardSize: number;
@@ -28,6 +33,8 @@ function Game({boardSize, possibleAttemps}: IGameProps) {
 	const [tries, setTries] = useState<number>(0);
 	const [firstPick, setFirstPick] = useState<{id: number, value: string}|null>(null);
 	const [secondPick, setSecondPick] = useState<{id: number, value: string}|null>(null);
+	const dispatch = useDispatch<AppDispatch>();
+	const {authUser} = useSelector<RootState, IAuthSate>(state => state.auth);
 		
 	//! logica para o jogo  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	function handleClick(index: number) {
@@ -123,8 +130,23 @@ function Game({boardSize, possibleAttemps}: IGameProps) {
 
 	//! funcções auxiliares  //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	function gotToMainMenu() {
+		saveGame();
 		navigate('restart');
 	}
+
+	function saveGame() {
+		if (points > 0) {
+			authUser.UserName
+			const score: IScore = {
+				session: 1,
+				userId: authUser.UserId,
+				userName: authUser.UserName,
+				points
+			};
+			dispatch(newScore(score));
+		}
+	}
+
 	function prepareImages() {
 		const selectedBaseImages = randomizePossibleFigures((boardSize*boardSize/2), possibleFigures);
 		const duplicate = selectedBaseImages.concat(selectedBaseImages);
@@ -160,7 +182,6 @@ function Game({boardSize, possibleAttemps}: IGameProps) {
 			<div className={styles.board} style={{gridTemplateColumns: `repeat(${boardSize * 2}, 6em)`}}>
 				{gameImages.map((value, index) => {
 					return (
-						<>
 						<div key={index} onClick={() => handleClick(index)} >
 							<Card
 								key={index}
@@ -170,7 +191,6 @@ function Game({boardSize, possibleAttemps}: IGameProps) {
 								pair={[firstPick, secondPick]}
 							/>
 						</div>
-						</>
 					)
 				})}
 			</div>

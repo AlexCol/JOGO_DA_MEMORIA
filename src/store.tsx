@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./Slices/AuthSlice";
+import scoreReducer from "./Slices/ScoreSlice";
 
 
 export const store = configureStore( {
 	reducer: {
-		auth: authReducer
+		auth: authReducer,
+		score: scoreReducer
 	}
 })
 
