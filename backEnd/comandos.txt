@@ -1,0 +1,2 @@
+dotnet ef migrations add 'minhaPrimeiraMigrationMemory'
+dotnet ef database update
