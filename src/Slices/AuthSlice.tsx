@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { authService } from "../Services/AuthService";
-import { decrypt } from "../Pages/Utils/Crypto";
+import { decrypt } from "../Utils/Crypto";
 
 export interface IAuthSate {
 	error: []

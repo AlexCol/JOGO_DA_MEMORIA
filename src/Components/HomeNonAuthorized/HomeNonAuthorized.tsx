@@ -1,4 +1,4 @@
-import { encrypt } from '../../Pages/Utils/Crypto';
+import { encrypt } from '../../Utils/Crypto';
 import styles from './HomeNonAuthorized.module.css';
 
 function HomeNonAuthorized() {

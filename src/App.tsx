@@ -3,7 +3,7 @@ import './App.css'
 import AppRoutes from './Components/AppRoutes/AppRoutes';
 import { AuthProvider } from './Context/AuthContext'
 import useAuth from './Hooks/useAuth'
-import { encrypt } from './Pages/Utils/Crypto';
+import { encrypt } from './Utils/Crypto';
 
 function App() {
   const {auth, user, loading, error} = useAuth();
