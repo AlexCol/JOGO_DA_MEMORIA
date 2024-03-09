@@ -31,7 +31,7 @@ function Card({id, value, clearReveal, pair}: ICardProp) {
 		<div className={styles.card_container}>
   		<div className={`${styles.card} ${(finded || rotate) ? styles.rotate : ''}`}>
 				<div className={styles.back}>{value}</div>
-				<div className={styles.front}>Y</div>
+				<div className={styles.front}></div>
   		</div>
 		</div>
 	)

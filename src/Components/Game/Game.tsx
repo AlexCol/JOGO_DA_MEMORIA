@@ -106,9 +106,7 @@ function Game({boardSize, possibleAttemps}: IGameProps) {
 			setSecondPick(null);
 			setDefeat(false);
 			setVictory(false);
-			setTimeout(() => {					
-				setClearReveal(false);
-			}, 2000);
+			setClearReveal(false);
 		}
 		if(!clearReveal) {
 			setTimeout(() => {					

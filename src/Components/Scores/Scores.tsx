@@ -4,11 +4,13 @@ import { IScore } from '../../Interfaces/IScore';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { IScoreSate } from '../../Slices/ScoreSlice';
+import { useNavigate } from 'react-router-dom';
 
 function Scores() {
 	const [firstTen, setFirstTem] = useState<IScore[]>([]);
 	const [userScorePos, setUserScorePos] = useState<number>(0);
 	const {userScore, scores} = useSelector<RootState, IScoreSate>(state => state.score);
+	const navigate = useNavigate();
 	
 
 
@@ -24,25 +26,36 @@ function Scores() {
 		}
 	}, [])
 
+	function gotToMainMenu() {
+		navigate('restart');
+	};
+
 	return (
-		<div className={styles.score_board}>
+		<table className={styles.score_board}>
+			<div className={styles.individual_score}>
+				<p>Posição</p>
+				<p>Nome</p>
+				<p>Pontuação</p>
+				<p className={styles.userId}>Cod Usuário</p>
+			</div>
 			{firstTen.map((score, index) => (
-				<div key={index} className={styles.individual_score}>
+				<div key={index} className={`${styles.individual_score} ${score.session === userScore?.session ? styles.userSession : ''}`}>
 					<p>{index+1}</p>
-					<p>{score.userId}</p>
 					<p>{score.userName}</p>
 					<p>{score.points}</p>
+					<p className={styles.userId}>{score.userId}</p>
 				</div>
 			))}
 			{userScore && userScorePos > 0 && (
-				<div className={styles.individual_score2}>
+				<div className={`${styles.individual_score} ${styles.userSession}`}>
 				<p>{userScorePos}</p>
-				<p>{userScore.userId}</p>
 				<p>{userScore.userName}</p>
 				<p>{userScore.points}</p>
+				<p className={styles.userId}>{userScore.userId}</p>
 				</div>
 			)}
-		</div>
+			<button onClick={gotToMainMenu}>Menu inicial</button>
+		</table>
 	)
 }
 export default Scores

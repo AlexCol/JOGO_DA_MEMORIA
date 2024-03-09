@@ -27,13 +27,15 @@
 	font-size: 4em;
   position: absolute;
   backface-visibility: hidden;
+	border: 1px solid transparent;
 }
 
 .front {
-  background-color: #ffcc00;
+  background-color: burlywood;
   display: flex;
   justify-content: center;
   align-items: center;
+	border: 1px solid purple;
 }
 
 .back {
@@ -42,4 +44,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+img {
+	max-height: 110%;
 }
