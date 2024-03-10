@@ -24,3 +24,13 @@
 	flex-wrap: wrap;
 	
 }
+
+@media screen and (max-width: 600px) {
+	.game button {
+		width: 30%;
+	}
+
+	.board {
+		grid-template-columns: repeat(4, 6em) !important;
+	}
+}

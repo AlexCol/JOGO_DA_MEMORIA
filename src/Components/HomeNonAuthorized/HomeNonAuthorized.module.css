@@ -29,3 +29,13 @@
 	background-color: blueviolet;
 	color: white;
 }
+
+@media screen and (max-width: 600px) {
+  .notLoged {
+    width: 100%;
+		max-width: 100%;
+  }
+	.notLoged a {
+		width: 15%;
+	}
+}

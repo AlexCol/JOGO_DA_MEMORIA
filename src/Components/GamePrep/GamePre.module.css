@@ -45,9 +45,7 @@
 				padding: 0;
 				margin: 0;
 			}
-		}
-
-		
+		}		
 	}
 
 	& .attemptContainer {
@@ -89,4 +87,39 @@
 }
 .red {
 	accent-color: red;
+}
+
+@media screen and (max-width: 600px) {
+  .main {
+		padding-top: 5em;
+	
+		
+		& h2 {
+			font-size: 1.4em;
+		}
+	
+		& h3 {
+			font-size: 1em;
+		}
+
+		& .sizeContainer {
+			width: 70%;
+			
+			& h4 {
+				margin: 0;
+			}
+	
+			& label {
+				width: 70%;
+				display: flex;
+				justify-content: space-between;			
+	
+			}
+		}
+	}
+
+	.main button {
+		width: 30%;
+		padding: 0.2em;
+	}
 }

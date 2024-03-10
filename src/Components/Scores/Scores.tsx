@@ -31,7 +31,7 @@ function Scores() {
 	};
 
 	return (
-		<table className={styles.score_board}>
+		<div className={styles.score_board}>
 			<div className={styles.individual_score}>
 				<p>Posição</p>
 				<p>Nome</p>
@@ -55,7 +55,7 @@ function Scores() {
 				</div>
 			)}
 			<button onClick={gotToMainMenu}>Menu inicial</button>
-		</table>
+		</div>
 	)
 }
 export default Scores

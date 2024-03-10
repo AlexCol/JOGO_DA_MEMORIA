@@ -32,3 +32,13 @@
 	background-color: white;
 	border: 1px solid blue;
 }
+
+@media screen and (max-width: 600px) {
+  .btn_logout {
+		width: 10%;
+	}
+
+	.btn_score {
+		width: 30%;
+	}
+}
